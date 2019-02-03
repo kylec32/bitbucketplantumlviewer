@@ -1,0 +1,28 @@
+{
+    "key": "bitbucket-plantuml-viewer",
+    "name": "Bitbucket PlantUML Viewer",
+    "description": "Bitbucket PlantUML Viewer",
+    "vendor": {
+        "name": "Kyle Carter",
+        "url": "https://kylecarter.tk"
+    },
+    "baseUrl": "https://bitbucketplantumlviewer.firebaseapp.com/",
+    "authentication": {
+        "type": "jwt"
+    },
+    "modules": {
+        "fileViews": [
+            {
+                "key": "render-plantuml-file",
+                "name": {
+                    "value": "View PlantUML Diagrams"
+                },
+                "url": "/plant-uml-file-viewer.html?repoPath={repo_path}&rev={file_cset}&filePath={file_path}&fileName={file_name}",
+                "file_matches": {
+                }
+            }
+        ]
+    },
+    "scopes": ["repository"],
+    "contexts": ["account"]
+}
