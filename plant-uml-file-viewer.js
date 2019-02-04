@@ -1,38 +1,36 @@
 var plantUmlSplitterRegex = /@startuml([\s\S]*?)@enduml/g;
 
-AP.require('request', function(request) {
-    var srcRawUrl = '/2.0/repositories/'
+var srcRawUrl = '/2.0/repositories/'
                         + getUrlParameter("repoPath")
                         + '/src/'
                         + getUrlParameter("rev")
                         + '/'
                         + getUrlParameter("fileName");
 
-    sendAnalytics("RepoOwner", SHA1(getUrlParameter("repoPath").split('/')[0]));
-    sendAnalytics("Filetype", getUrlParameter("fileName").split('.')[1]);
-    
-    request({              
-        url: srcRawUrl,
-        responseType: "text/plain",
-        success: function (rawSrc) {
-            var diagramMarkups = rawSrc.match(plantUmlSplitterRegex);
-            if(diagramMarkups != undefined) {
-                sendAnalytics('NumberOfDiagrams', diagramMarkups.length);
-                diagramMarkups.forEach(dataItem => {
-                    var span = document.createElement('span');
-                    span.innerHTML = getDiagramSection(compress(dataItem));
-                    document.getElementById('diagrams').appendChild(span);
-                });
-            } else {
-                document.querySelector("#diagrams").innerHTML = "<br/><div style='text-align:center;'>No diagram markup found.</div>"
-            }
-        },
-        error: function(err) {
-            document.querySelector("#diagrams").innerHTML = 
-            "Failed to load source file from Bitbucket. (" + JSON.stringify(err) + ")";
-        }
-    });          
+sendAnalytics("RepoOwner", SHA1(getUrlParameter("repoPath").split('/')[0]));
+sendAnalytics("Filetype", getUrlParameter("fileName").split('.')[1]);
 
+AP.request({
+    url: srcRawUrl,
+    type: 'GET',
+    responseType: "text",
+    success: function (rawSrc) {
+        var diagramMarkups = rawSrc.match(plantUmlSplitterRegex);
+        if(diagramMarkups != undefined) {
+            sendAnalytics('NumberOfDiagrams', diagramMarkups.length);
+            diagramMarkups.forEach(dataItem => {
+                var span = document.createElement('span');
+                span.innerHTML = getDiagramSection(compress(dataItem));
+                document.getElementById('diagrams').appendChild(span);
+            });
+        } else {
+            document.querySelector("#diagrams").innerHTML = "<br/><div style='text-align:center;'>No diagram markup found.</div>"
+        }
+    },
+    error: function(err) {
+        document.querySelector("#diagrams").innerHTML =
+        "Failed to load source file from Bitbucket. (" + JSON.stringify(err) + ")";
+    }
 });
 
 function getUrlParameter(name) {
