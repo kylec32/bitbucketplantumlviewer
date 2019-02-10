@@ -20,8 +20,10 @@ AP.request({
             sendAnalytics('NumberOfDiagrams', diagramMarkups.length);
             diagramMarkups.forEach(dataItem => {
                 var span = document.createElement('span');
-                span.innerHTML = getDiagramSection(compress(dataItem));
+                var compressedData = compress(dataItem);
+                span.innerHTML = getDiagramSection(compressedData);
                 document.getElementById('diagrams').appendChild(span);
+                grabAndPlaceDiagramMarkup(compressedData);
             });
         } else {
             document.querySelector("#diagrams").innerHTML = "<br/><div style='text-align:center;'>No diagram markup found.</div>"
@@ -41,17 +43,30 @@ function getUrlParameter(name) {
 };
 
 function sendAnalytics(type, value) {
-    console.log(type + '  ' + value);
     gtag('event', value, {
         'event_category' : type,
         'event_label' : type
     });
 }
 
+function grabAndPlaceDiagramMarkup(compressedData) {
+    var identifier = SHA1(compressedData);
+    fetch("https://www.plantuml.com/plantuml/svg/" + compressedData)
+        .then(value => value.text()
+        .then(text => {
+            var links = document.getElementById("plantumlparse-link-section" + identifier);
+            links.style.display = "block";
+            var svg = document.getElementById("diagram-placeholder-" + identifier);
+            svg.innerHTML = text;
+            }
+        ));
+}
+
 function getDiagramSection(compressedData) {
+    var identifier = SHA1(compressedData);
     return `<div style="text-align:center">
-                <object data='https://www.plantuml.com/plantuml/svg/` + compressedData + `' type='image/svg+xml'></object>
-                <div id="plantumlparse_link_section">
+                <div id="diagram-placeholder-` + identifier + `"><img style="height:100px"src="load.svg"/></div>
+                <div id="plantumlparse-link-section` + identifier + `" style="display:none">
                     <a target='_blank' href='https://www.plantuml.com/plantuml/svg/` + compressedData + `'>SVG</a> |
                     <a target='_blank' href='https://www.plantuml.com/plantuml/png/` + compressedData + `'>PNG</a> |
                     <a target='_blank' href='https://www.plantuml.com/plantuml/txt/` + compressedData + `'>TXT</a> 
@@ -59,4 +74,4 @@ function getDiagramSection(compressedData) {
             </div>
             <br/>
             <br/>`;
-}
+} 
