@@ -5,7 +5,7 @@ var srcRawUrl = '/2.0/repositories/'
                         + '/src/'
                         + getUrlParameter("rev")
                         + '/'
-                        + getUrlParameter("fileName");
+                        + getUrlParameter("filePath");
 
 sendAnalytics("RepoOwner", SHA1(getUrlParameter("repoPath").split('/')[0]));
 sendAnalytics("Filetype", getUrlParameter("fileName").split('.')[1]);
