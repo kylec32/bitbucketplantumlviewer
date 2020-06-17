@@ -1,4 +1,4 @@
-var plantUmlSplitterRegex = /@startuml([\s\S]*?)@enduml/g;
+var plantUmlSplitterRegex = /(@startuml([\s\S]*?)@enduml)|(@startsalt([\s\S]*?)@endsalt)/g;
 
 var srcRawUrl = '/2.0/repositories/'
                         + getUrlParameter("repoPath")
