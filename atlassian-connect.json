@@ -23,7 +23,7 @@
             }
         ]
     },
-    "scopes": ["repository"],
+    "scopes": ["read"],
     "contexts": ["account"],
     "apiMigrations": {
      "context-qsh": true
