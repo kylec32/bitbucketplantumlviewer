@@ -24,5 +24,8 @@
         ]
     },
     "scopes": ["repository"],
-    "contexts": ["account"]
+    "contexts": ["account"],
+    "apiMigrations": {
+     "context-qsh": true
+  }
 }
