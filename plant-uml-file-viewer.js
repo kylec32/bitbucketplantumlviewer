@@ -43,10 +43,13 @@ function getUrlParameter(name) {
 };
 
 function sendAnalytics(type, value) {
-    gtag('event', value, {
-        'event_category' : type,
-        'event_label' : type
-    });
+    try {
+        if (typeof umami != 'undefined') {
+            umami.trackEvent(`${value}`, type)
+        }
+    } catch (e) {
+        console.error(e);
+    }
 }
 
 function grabAndPlaceDiagramMarkup(compressedData) {
