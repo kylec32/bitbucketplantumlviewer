@@ -45,7 +45,7 @@ function getUrlParameter(name) {
 function sendAnalytics(type, value) {
     try {
         if (typeof umami != 'undefined') {
-            umami.trackEvent(type, {data: { name: `${value}`}})
+            umami.track(type, {data: { name: `${value}`}})
         }
     } catch (e) {
         console.error(e);
