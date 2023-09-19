@@ -52,6 +52,16 @@ function sendAnalytics(type, value) {
     }
 }
 
+function sendPageView() {
+    try {
+        if (typeof umami != 'undefined') {
+            umami.track({ website: '5b731534-c2b3-49e1-876c-0600dc54d45d', url: window.location.pathname + "?repoPath=" + new URLSearchParams(window.location.search).get('repoPath') })
+        }
+    } catch (e) {
+        console.error(e);
+    }
+}
+
 function grabAndPlaceDiagramMarkup(compressedData) {
     var identifier = SHA1(compressedData);
     fetch("https://www.plantuml.com/plantuml/svg/" + compressedData)
