@@ -78,7 +78,7 @@ function grabAndPlaceDiagramMarkup(compressedData) {
 function getDiagramSection(compressedData) {
     var identifier = SHA1(compressedData);
     return `<div style="text-align:center">
-                <div id="diagram-placeholder-` + identifier + `"><img style="height:100px"src="load.svg"/></div>
+                <img id="diagram-placeholder-` + identifier + `" src='https://www.plantuml.com/plantuml/png/` + compressedData + `' />
                 <div id="plantumlparse-link-section` + identifier + `" style="display:none">
                     <a target='_blank' href='https://www.plantuml.com/plantuml/svg/` + compressedData + `'>SVG</a> |
                     <a target='_blank' href='https://www.plantuml.com/plantuml/png/` + compressedData + `'>PNG</a> |
